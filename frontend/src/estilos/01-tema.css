@@ -1,0 +1,31 @@
+/* 01-tema.css — Colores de acento por operación y por sección (variables de :root).
+   (Viene de estilos.css de la v6, sin cambios de diseño.) */
+
+/* --- Colores de acento (@property permite animar el cambio de color) --- */
+@property --a1 { syntax: "<color>"; inherits: true; initial-value: #059669; }
+@property --a2 { syntax: "<color>"; inherits: true; initial-value: #84cc16; }
+
+:root {
+  --bg: #fff8f0;                 /* crema cálido */
+  --tinta: #2a1e3f;              /* ciruela oscuro (en vez de negro) */
+  --suave: #85789a;
+  --linea: #f1e5d9;
+  --cero: #f5ece3;               /* arena: el color de los bits en 0 */
+  --ok: #10b981;
+  --mal: #ef4444;
+  --radio: 26px;
+  --sombra: 0 1px 2px rgba(120, 70, 40, .05), 0 22px 50px -20px rgba(150, 80, 40, .30);
+  --fuente: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+
+/* Un par de colores (a1 → a2) por operación */
+body[data-op="suma"]           { --a1: #059669; --a2: #84cc16; }   /* verde → lima    */
+body[data-op="resta"]          { --a1: #e11d48; --a2: #f472b6; }   /* rojo → rosa     */
+body[data-op="multiplicacion"] { --a1: #6d28d9; --a2: #3b82f6; }   /* violeta → azul  */
+body[data-op="division"]       { --a1: #d97706; --a2: #f97316; }   /* ámbar → naranja */
+
+/* Colores de cada sección */
+body[data-vista="numeros"]     { --a1: #2563eb; --a2: #8b5cf6; }   /* azul → violeta    */
+body[data-vista="texto"]       { --a1: #0d9488; --a2: #6366f1; }   /* turquesa → índigo */
+body[data-vista="pruebas"]     { --a1: #db2777; --a2: #f59e0b; }   /* rosa → ámbar      */

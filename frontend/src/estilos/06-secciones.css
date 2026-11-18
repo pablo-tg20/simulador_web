@@ -1,0 +1,83 @@
+/* 06-secciones.css — Menú de secciones y sección Texto ↔ ASCII.
+   (Viene de estilos.css de la v6, sin cambios de diseño.) */
+
+/* --- Barra para cambiar de sección -------------------------------------- */
+.modos { display: flex; gap: 6px; padding: 5px; border-radius: 20px; background: rgba(255,255,255,.85); border: 1px solid var(--linea); }
+.modo {
+  display: flex; align-items: center; gap: 10px; padding: 9px 16px; border: 0; border-radius: 15px; background: none;
+  font-weight: 700; font-size: 14px; color: var(--suave); transition: all .25s;
+}
+.modo i { font: 800 12px var(--mono); padding: 4px 8px; border-radius: 9px; background: var(--cero); color: var(--suave); transition: all .25s; }
+.modo:hover:not([aria-selected="true"]) { color: var(--tinta); }
+.modo[aria-selected="true"] { color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 12px 22px -10px var(--a1); }
+.modo[aria-selected="true"] i { background: rgba(255,255,255,.25); color: #fff; }
+
+/* --- Sección Texto ↔ Binario --------------------------------------------- */
+.selector .simbolo { white-space: nowrap; }
+#selector-conversion .opcion .simbolo { font: 800 17px var(--mono); }
+#selector-conversion .opcion .nombre { font-size: 12px; }
+.entrada-texto { font: 700 20px var(--mono); letter-spacing: .02em; }
+.sub { font-size: 12px; color: var(--suave); }
+.nota { margin: -4px 0 14px; padding: 9px 14px; border-radius: 12px; font-size: 12.5px; line-height: 1.5;
+        background: #fff7e0; color: #8a5a00; border: 1px solid #fde9a8; }
+.salida { font: 700 15px/1.6 var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; max-height: 112px; overflow: auto; min-width: 0; }
+.salida.texto { font-size: 22px; letter-spacing: .02em; }
+.chip.conv { --c: var(--a1); }
+.banda-texto { flex-wrap: nowrap; align-items: flex-start; }
+.banda-texto .banda-bits { flex: 1; align-items: flex-start; flex-direction: column; gap: 4px; }
+.banda-texto .sec { flex: none; }
+
+/* Desglose de la letra seleccionada */
+.desglose {
+  padding: 14px 16px; margin-bottom: 14px; border-radius: 20px; animation: subir .4s both;
+  background: linear-gradient(180deg, #fffdfa, #fff6ec); border: 1px solid var(--linea);
+}
+.desglose .cabeza { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.desglose .grande { width: 46px; height: 54px; border-radius: 14px; display: grid; place-items: center; font: 800 26px var(--mono);
+                    color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 12px 20px -10px var(--a1); }
+.desglose .cabeza p { font-size: 13.5px; line-height: 1.5; }
+.desglose .cabeza b { color: var(--a1); }
+.etiqueta-tipo { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 99px;
+                 background: var(--cero); color: var(--suave); margin-left: 6px; }
+.pesos { display: grid; grid-template-columns: 74px repeat(8, minmax(0, 1fr)); gap: 5px; align-items: center; }
+.pesos .rot { font-size: 11px; font-weight: 700; color: var(--suave); text-align: right; padding-right: 6px; }
+.pesos .peso { text-align: center; font: 700 12px var(--mono); color: var(--suave); }
+.pesos .bit { --w: 100%; width: 100%; height: 38px; font-size: 18px; border-radius: 10px; }
+.pesos .queda { text-align: center; font: 600 12px var(--mono); color: var(--suave); }
+.pesos .queda.cero { opacity: .45; }
+.pesos .on { color: var(--a1); font-weight: 800; }
+.desglose .suma { margin-top: 12px; font: 700 13.5px var(--mono); text-align: center; padding: 8px; border-radius: 12px;
+                  background: color-mix(in srgb, var(--a1) 9%, white); overflow-wrap: anywhere; }
+.desglose .como { margin-top: 8px; font-size: 12px; color: var(--suave); line-height: 1.5; }
+
+/* Tabla Letra | Decimal | Binario (como la del material) */
+.tabla-conv { border: 1px solid var(--linea); border-radius: 18px; overflow: auto; max-height: min(330px, 40vh); background: #fff; }
+.tabla-conv:has(.vacio) { border: 0; background: none; max-height: none; }
+.fila-conv {
+  display: grid; grid-template-columns: 70px 90px minmax(0, 1fr); align-items: center; gap: 10px;
+  width: 100%; padding: 7px 14px; border: 0; border-bottom: 1px solid var(--linea); background: none; text-align: left;
+  font: inherit; animation: aparecer .35s both; animation-delay: calc(var(--i, 0) * 30ms);
+}
+.fila-conv.cab { position: sticky; top: 0; z-index: 2; padding: 9px 14px; font-size: 11px; font-weight: 800; letter-spacing: .06em;
+                 text-transform: uppercase; color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2)); animation: none; }
+button.fila-conv { cursor: pointer; transition: background .2s; }
+button.fila-conv:hover { background: color-mix(in srgb, var(--a1) 7%, white); }
+button.fila-conv.sel { background: color-mix(in srgb, var(--a1) 13%, white); box-shadow: inset 4px 0 0 var(--a1); }
+.c-letra { font: 800 18px var(--mono); }
+.c-letra.esp { font-size: 12px; font-weight: 700; color: var(--a1); }
+.c-dec { font: 700 14px var(--mono); color: var(--suave); }
+.c-bits { display: flex; gap: 3px; }
+.c-bits .bit { --w: 22px; height: 26px; border-radius: 7px; font-size: 12px; }
+.c-bits .bit.uno { box-shadow: none; }
+
+/* Tabla de referencia ASCII */
+.grupos { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.grupos button { border: 1.5px solid var(--linea); background: #fff; border-radius: 99px; padding: 5px 12px; font-size: 12px; font-weight: 700; color: var(--suave); transition: all .2s; }
+.grupos button:hover { border-color: var(--a1); color: var(--tinta); }
+.grupos button[aria-selected="true"] { color: #fff; border-color: transparent; background: linear-gradient(135deg, var(--a1), var(--a2)); }
+.tabla-ref { border: 1px solid var(--linea); border-radius: 16px; overflow: auto; max-height: 300px; background: #fff; }
+.tabla-ref .fila-conv { grid-template-columns: 44px 52px minmax(0, 1fr); padding: 6px 12px; animation: none; }
+.tabla-ref .c-bits { font: 600 13px var(--mono); letter-spacing: .06em; }
+.tabla-ref .fila-conv.cab { padding: 8px 12px; }
+
+.pie { margin-top: 28px; text-align: center; font-size: 12px; color: var(--suave); }

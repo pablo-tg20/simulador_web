@@ -1,0 +1,38 @@
+/* 09-aritmetica.css — Aritmética con varios números (campos, etapas).
+   (Viene de estilos.css de la v6, sin cambios de diseño.) */
+
+/* --- Aritmética con varios números (v6) ---------------------------------- */
+.campo label .decimal { margin-left: auto; }
+.quitar {
+  width: 26px; height: 26px; flex: none; border-radius: 9px; border: 1.5px solid var(--linea); background: #fff;
+  color: var(--suave); font-size: 16px; line-height: 1; display: grid; place-items: center; transition: all .2s;
+}
+.quitar:hover { border-color: var(--mal); color: var(--mal); }
+.agregar {
+  width: 100%; margin-top: 12px; padding: 10px; border-radius: 14px; font-weight: 700; font-size: 13px;
+  border: 2px dashed color-mix(in srgb, var(--a1) 40%, white); background: color-mix(in srgb, var(--a1) 5%, white);
+  color: var(--a1); transition: all .2s;
+}
+.agregar:hover:not(:disabled) { border-style: solid; background: color-mix(in srgb, var(--a1) 10%, white); }
+.agregar:disabled { opacity: .5; cursor: default; }
+h2 .sub { font-weight: 600; }
+
+.etapas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.etapa {
+  display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 99px;
+  border: 1.5px solid var(--linea); background: #fff; font: 600 12px var(--mono); color: var(--suave);
+  max-width: 100%; transition: all .2s;
+}
+.etapa span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.etapa b {
+  width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center;
+  font: 800 11px var(--fuente); background: var(--cero); color: var(--suave);
+}
+.etapa:hover { border-color: var(--a1); color: var(--tinta); }
+.etapa.actual { border-color: var(--a1); color: var(--tinta); background: color-mix(in srgb, var(--a1) 8%, white); }
+.etapa.actual b { background: linear-gradient(135deg, var(--a1), var(--a2)); color: #fff; }
+.tag-etapa {
+  display: inline-block; padding: 1px 9px; margin-right: 4px; border-radius: 99px; font-size: 12px; font-weight: 800;
+  color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2));
+}
+.grupo.aritmetica { background: #d1fae5; color: #047857; }

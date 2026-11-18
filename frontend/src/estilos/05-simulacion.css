@@ -1,0 +1,106 @@
+/* 05-simulacion.css — Escenario de la simulación, controles, confeti, historial y división en casita.
+   (Viene de estilos.css de la v6, sin cambios de diseño.) */
+
+/* --- Escenario de simulación -------------------------------------------- */
+.simulacion { position: relative; overflow: hidden; }
+.escenario {
+  background: linear-gradient(180deg, #fffdfa, #fff6ec); border: 1px solid var(--linea);
+  border-radius: 22px; padding: 22px 24px; overflow: auto; min-height: 300px; max-height: min(600px, 68vh);
+  display: flex; align-items: flex-start;       /* el contenido se centra con margin:auto y crece hacia abajo */
+}
+.vacio { display: grid; place-items: center; text-align: center; gap: 18px; padding: 24px 12px; color: var(--suave); line-height: 1.6; margin: auto; }
+.vacio .deco { display: flex; gap: 10px; }
+.vacio .deco span {
+  width: 52px; height: 62px; border-radius: 15px; display: grid; place-items: center;
+  font: 700 24px var(--mono); background: var(--cero); color: #bdae9e; animation: flotar-bit 3s ease-in-out infinite;
+}
+.vacio .deco span:nth-child(odd) { background: linear-gradient(135deg, var(--a1), var(--a2)); color: #fff; opacity: .9; }
+.vacio .deco span:nth-child(2) { animation-delay: .3s; } .vacio .deco span:nth-child(3) { animation-delay: .6s; }
+.vacio .deco span:nth-child(4) { animation-delay: .9s; }
+@keyframes flotar-bit { 50% { transform: translateY(-10px); } }
+
+.pizarra { margin: auto; width: max-content; }
+.fila { display: flex; align-items: center; gap: 14px; margin: 8px 0; transition: opacity .45s, transform .45s; }
+.fila.oculta { opacity: 0; transform: translateY(-8px); }
+.etiqueta { width: 104px; flex: none; text-align: right; font-size: 12px; font-weight: 700; color: var(--suave); }
+.celdas { display: grid; grid-template-columns: repeat(var(--cols), var(--w)); gap: 6px; }
+.regla { height: 3px; border-radius: 3px; background: #ecdccb; margin: 10px 0 10px 118px; }
+.leyenda {
+  margin: 16px 0 16px; padding: 14px 18px; border-radius: 16px; min-height: 54px; line-height: 1.6; font-size: 14.5px;
+  background: color-mix(in srgb, var(--a1) 9%, white); border: 1px solid color-mix(in srgb, var(--a1) 22%, white);
+}
+.leyenda b { color: var(--a1); }
+
+.controles { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.icono {
+  width: 42px; height: 42px; border-radius: 14px; border: 1.5px solid var(--linea); background: #fff;
+  display: grid; place-items: center; transition: all .2s;
+}
+.icono:hover:not(:disabled) { border-color: var(--a1); color: var(--a1); }
+.icono:disabled { opacity: .4; cursor: default; }
+.primario.redondo { width: 50px; height: 50px; border-radius: 50%; padding: 0; display: grid; place-items: center; }
+/* Barra de progreso clara (sin el gris oscuro por defecto del navegador) */
+#barra { flex: 1; min-width: 140px; -webkit-appearance: none; appearance: none; height: 8px; border-radius: 99px;
+         background: var(--cero); outline: none; }
+#barra::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; border: 3px solid #fff;
+         background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 4px 10px -2px var(--a1); cursor: pointer; }
+#barra::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; border: 3px solid #fff;
+         background: var(--a1); box-shadow: 0 4px 10px -2px var(--a1); cursor: pointer; }
+#barra::-moz-range-track { height: 8px; border-radius: 99px; background: var(--cero); }
+#barra:disabled { opacity: .5; }
+.contador { font: 600 12px var(--mono); color: var(--suave); min-width: 90px; text-align: center; }
+#velocidad { border: 1.5px solid var(--linea); background: #fff; border-radius: 12px; padding: 9px 12px; font-size: 13px; font-weight: 600; }
+
+.interruptor { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--suave); cursor: pointer; }
+.interruptor input { position: absolute; opacity: 0; }
+.pista { width: 40px; height: 24px; border-radius: 99px; background: #e5d9cc; position: relative; transition: background .25s; }
+.pista::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff;
+                box-shadow: 0 2px 6px rgba(0,0,0,.2); transition: transform .25s; }
+.interruptor input:checked + .pista { background: linear-gradient(135deg, var(--a1), var(--a2)); }
+.interruptor input:checked + .pista::after { transform: translateX(16px); }
+.interruptor input:focus-visible + .pista { outline: 3px solid color-mix(in srgb, var(--a1) 40%, transparent); }
+
+/* Confeti al terminar la simulación */
+.confeti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 5; }
+.confeti i { position: absolute; top: 70px; width: 9px; height: 14px; border-radius: 3px; opacity: 0;
+             animation: caer 1.9s cubic-bezier(.3, .6, .5, 1) forwards; }
+@keyframes caer {
+  0% { opacity: 1; transform: translate(0, 0) rotate(0); }
+  100% { opacity: 0; transform: translate(var(--dx, 0), 480px) rotate(540deg); }
+}
+
+/* --- Historial ----------------------------------------------------------- */
+.lista { list-style: none; padding: 0; display: grid; gap: 8px; max-height: 300px; overflow-y: auto; }
+.lista button {
+  width: 100%; text-align: left; display: flex; align-items: center; gap: 12px;
+  background: #fff; border: 1.5px solid var(--linea); border-radius: 14px; padding: 10px 14px;
+  font: 600 13px var(--mono); transition: all .2s;
+}
+.lista button:hover { border-color: var(--a1); transform: translateX(3px); }
+.lista .sello { width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; color: #fff;
+                font: 800 15px var(--fuente); flex: none; }
+.lista li { min-width: 0; }
+.lista .op-texto { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lista .res { margin-left: auto; color: var(--suave); max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* --- División larga en formato "casita" ---------------------------------- */
+.casita {
+  display: grid; margin: auto; width: max-content;
+  grid-template-columns: max-content repeat(var(--n), calc(var(--w) + 6px)) max-content;
+  align-items: center; row-gap: 4px;
+}
+.casita .bit { margin: 0 3px; height: calc(var(--w) * 1.05); }
+.casita .fuera { display: none; }
+.casita .rotulo { font-size: 11px; font-weight: 700; color: var(--suave); padding: 0 10px; white-space: nowrap; }
+.casita .rotulo.izq { text-align: right; }
+.casita .divisor {
+  display: flex; align-self: stretch; align-items: flex-end; padding: 8px 8px 0 0;
+  border-right: 3px solid #b8997c;
+}
+.casita .techo { align-self: start; height: 0; border-top: 3px solid #b8997c; }
+.casita .dv { margin-top: 8px; }
+.casita .linea-c { align-self: center; height: 3px; margin: 2px 3px; border-radius: 3px; background: #b8997c; }
+.casita .bit.bajado { background: color-mix(in srgb, var(--a2) 18%, white); color: var(--a1);
+                      outline: 2px dashed var(--a1); outline-offset: -2px; box-shadow: none; }
+.casita .bit.activa { outline-offset: 1px; }
+.casita .bit.resfinal { outline: 3px solid var(--ok); outline-offset: 1px; }

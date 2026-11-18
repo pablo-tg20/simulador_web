@@ -1,0 +1,108 @@
+/* 03-formularios.css — Selector de opciones, campos de entrada, botones y chips de ejemplo.
+   (Viene de estilos.css de la v6, sin cambios de diseño.) */
+
+/* --- Selector de operación ---------------------------------------------- */
+.selector {
+  position: relative; display: grid; grid-template-columns: repeat(var(--n, 4), 1fr);
+  padding: 6px; background: var(--cero); border-radius: 18px; margin: 10px 0 18px;
+}
+.pastilla {
+  position: absolute; top: 6px; bottom: 6px; left: 6px;
+  width: calc((100% - 12px) / var(--n, 4));
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--a1), var(--a2));
+  box-shadow: 0 12px 22px -10px var(--a1);
+  transition: transform .5s cubic-bezier(.3, 1.35, .5, 1);
+}
+.opcion {
+  position: relative; z-index: 1; background: none; border: 0; padding: 10px 2px;
+  display: grid; gap: 2px; justify-items: center; color: var(--suave); transition: color .25s;
+}
+.opcion .simbolo { font-size: 24px; font-weight: 800; line-height: 1; }
+.opcion .nombre { font-size: 10.5px; font-weight: 600; }
+.opcion[aria-selected="true"] { color: #fff; }
+.opcion:hover:not([aria-selected="true"]) { color: var(--tinta); }
+
+/* --- Campos de entrada --------------------------------------------------- */
+.campo { margin-top: 10px; }
+.campo label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+.rol { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+.letra {
+  width: 24px; height: 24px; border-radius: 8px; display: grid; place-items: center; font-style: normal;
+  font: 800 12px var(--mono); color: #fff; background: linear-gradient(135deg, var(--a1), var(--a2));
+}
+.decimal { font: 700 12px var(--mono); color: var(--a1); }
+.ayuda { display: block; font-size: 12px; color: var(--suave); margin-top: 6px; }
+.entrada {
+  width: 100%; padding: 10px 16px; border-radius: 16px; border: 2px solid var(--linea);
+  background: #fff; font: 700 21px var(--mono); letter-spacing: .08em; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.entrada::placeholder { color: #d9cdc0; }
+.entrada:focus { border-color: var(--a1); box-shadow: 0 0 0 5px color-mix(in srgb, var(--a1) 18%, transparent); }
+.entrada.valida { border-color: #34d399; }
+.entrada.invalida { border-color: var(--mal); animation: temblar .35s; }
+@keyframes temblar { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+.vista { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.vista:empty { display: none; }
+.vista .bit { --w: 18px; border-radius: 6px; }
+.vista .mas { font-size: 12px; color: var(--suave); align-self: center; }
+
+/* Símbolo entre A y B: deja claro qué se le hace a qué */
+.operador { display: flex; align-items: center; gap: 12px; margin: 10px 0 0; }
+.operador::before, .operador::after { content: ""; flex: 1; height: 2px; border-radius: 2px; background: var(--linea); }
+.operador span {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  font: 800 22px var(--fuente); color: #fff;
+  background: linear-gradient(135deg, var(--a1), var(--a2)); box-shadow: 0 10px 20px -8px var(--a1);
+}
+.operador span.pop { animation: aparecer .45s cubic-bezier(.2, 1.6, .4, 1); }
+
+/* Frase en lenguaje normal que explica qué se va a calcular */
+.frase {
+  margin-top: 12px; padding: 11px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5;
+  background: color-mix(in srgb, var(--a1) 9%, white); border: 1px solid color-mix(in srgb, var(--a1) 20%, white);
+}
+.frase b { color: var(--a1); }
+
+.error {
+  margin-top: 14px; padding: 12px 14px; border-radius: 14px; font-size: 13px; font-weight: 500;
+  background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; animation: temblar .35s;
+}
+
+/* --- Botones ------------------------------------------------------------- */
+.acciones { display: flex; gap: 10px; margin-top: 14px; }
+.acciones .primario { flex: 1; }
+.primario {
+  border: 0; border-radius: 16px; padding: 14px 28px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, var(--a1), var(--a2));
+  box-shadow: 0 16px 28px -12px var(--a1);
+  transition: transform .2s, filter .2s;
+}
+.primario:hover:not(:disabled) { transform: translateY(-2px); filter: saturate(1.15); }
+.primario:active:not(:disabled) { transform: scale(.97); }
+.primario:disabled { opacity: .45; box-shadow: none; cursor: default; }
+.primario.cargando { animation: latir .8s ease-in-out infinite; }
+@keyframes latir { 50% { opacity: .65; } }
+.sec {
+  border: 1.5px solid var(--linea); background: #fff; border-radius: 16px; padding: 12px 16px;
+  font-weight: 600; font-size: 14px; transition: border-color .2s, transform .2s;
+}
+.sec:hover { border-color: var(--a1); transform: translateY(-1px); }
+
+.ejemplos { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px;
+            font-size: 12px; color: var(--suave); font-weight: 600; }
+.chip {
+  --c: var(--suave);
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1.5px solid var(--linea); background: #fff; border-radius: 99px; padding: 6px 12px;
+  font: 600 12px var(--mono); transition: all .2s;
+}
+.chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.chip[data-op="suma"] { --c: #059669; } .chip[data-op="resta"] { --c: #e11d48; }
+.chip[data-op="multiplicacion"] { --c: #6d28d9; } .chip[data-op="division"] { --c: #d97706; }
+.chip:hover { border-color: var(--c); transform: translateY(-1px); box-shadow: 0 8px 16px -10px var(--c); }
+
+.enlace-texto { background: none; border: 0; color: var(--suave); font-size: 12px; text-decoration: underline; }
+.enlace-texto:hover { color: var(--tinta); }

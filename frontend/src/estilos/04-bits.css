@@ -1,0 +1,55 @@
+/* 04-bits.css — Los bits (pieza visual principal) y la franja del resultado.
+   (Viene de estilos.css de la v6, sin cambios de diseño.) */
+
+/* --- Los "bits" (la pieza visual principal) ------------------------------ */
+.bit {
+  width: var(--w, 44px); height: calc(var(--w, 44px) * 1.18);
+  border-radius: calc(var(--w, 44px) * .3);
+  display: grid; place-items: center;
+  font: 700 calc(var(--w, 44px) * .46) var(--mono);
+  background: var(--cero); color: #b3a595;
+  transition: background .3s, color .3s, opacity .3s, transform .3s;
+}
+.bit.uno {
+  background: linear-gradient(135deg, var(--a1), var(--a2)); color: #fff;
+  box-shadow: 0 10px 18px -10px var(--a1);
+}
+.bit.malo { background: #ffe4e6; color: var(--mal); }
+.bit.hueco { background: transparent; box-shadow: none; }
+.bit.pendiente { background: transparent; border: 2px dashed #ecdccb; }
+.bit.relleno { background: transparent; border: 2px dashed color-mix(in srgb, var(--a1) 40%, white);
+               color: color-mix(in srgb, var(--a1) 55%, white); box-shadow: none; }
+.bit.tenue { opacity: .3; }
+.bit.activa { outline: 3px solid var(--a1); outline-offset: 3px; }
+.bit.acarreo {
+  height: calc(var(--w, 44px) * .78); font-size: calc(var(--w, 44px) * .38);
+  background: color-mix(in srgb, var(--a1) 16%, white); color: var(--a1); border-radius: 99px;
+}
+.bit.hueco.acarreo { background: transparent; }
+.bit.nuevo { animation: aparecer .5s cubic-bezier(.2, 1.6, .4, 1) both; }
+.bit.acarreo.nuevo { animation: volar .6s cubic-bezier(.2, 1.2, .4, 1) both; }
+@keyframes aparecer { from { transform: scale(.3) translateY(10px); opacity: 0; } }
+@keyframes volar { from { transform: translate(calc(var(--w, 44px) * .9), calc(var(--w, 44px) * 1.6)) scale(.3); opacity: 0; } }
+.bit.mini { --w: 24px; border-radius: 7px; }
+
+.bits { display: flex; flex-wrap: wrap; gap: 6px; }
+#resultado-bits .bit { animation: aparecer .55s cubic-bezier(.2, 1.6, .4, 1) both; animation-delay: calc(var(--i, 0) * 35ms); }
+
+/* --- Franja del resultado ------------------------------------------------ */
+.banda {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px 22px; flex-wrap: wrap;
+  padding: 14px 18px; margin-bottom: 16px; border-radius: 20px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--a1) 13%, white), color-mix(in srgb, var(--a2) 15%, white));
+  border: 1px solid color-mix(in srgb, var(--a1) 25%, white);
+  animation: subir .5s both;
+}
+.banda-bits { display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; min-width: 0; }
+.etq { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--a1); }
+.banda-info { display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; }
+.banda .sec { padding: 8px 14px; font-size: 13px; border-radius: 12px; }
+.insignia { background: #d1fae5; color: #047857; padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.insignia.mal { background: #ffe4e6; color: #be123c; }
+.residuo { display: flex; align-items: center; gap: 10px; }
+.residuo > span { font-size: 11px; font-weight: 800; color: var(--a1); text-transform: uppercase; letter-spacing: .08em; }
+.residuo .bit { --w: 30px; }
+.ecuacion { font: 600 13px var(--mono); color: var(--suave); overflow-wrap: anywhere; }

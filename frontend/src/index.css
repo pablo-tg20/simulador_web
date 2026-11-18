@@ -1,0 +1,20 @@
+/* =====================================================================
+   index.css — ESTILOS GLOBALES
+   Se importa UNA sola vez en main.jsx y afecta a TODA la aplicación.
+
+   El diseño es el mismo de la versión 6 (estilos.css). Se dividió en
+   archivos por tema dentro de la carpeta estilos/. El ORDEN importa:
+   las reglas de abajo pueden sobrescribir a las de arriba (cascada),
+   por eso se importan en el mismo orden en que estaban en estilos.css.
+   ===================================================================== */
+
+@import './estilos/01-tema.css';            /* colores (variables) por operación y sección */
+@import './estilos/02-base.css';            /* base, fondo decorativo, cabecera, tarjetas */
+@import './estilos/03-formularios.css';     /* selector, campos, botones, chips */
+@import './estilos/04-bits.css';            /* los bits y la franja del resultado */
+@import './estilos/05-simulacion.css';      /* escenario, controles, historial, casita */
+@import './estilos/06-secciones.css';       /* menú de secciones y sección Texto ↔ ASCII */
+@import './estilos/07-responsive.css';      /* celulares, tablets y "menos movimiento" */
+@import './estilos/08-numeros-pruebas.css'; /* secciones Decimal ↔ Binario y Pruebas */
+@import './estilos/09-aritmetica.css';      /* campos de 2 a 6 números y etapas */
+@import './estilos/10-servidor.css';        /* NUEVO v7: estado de la conexión con el backend */
