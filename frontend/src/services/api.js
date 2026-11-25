@@ -7,9 +7,15 @@
 // Ahora cada función hace una petición HTTP real al servidor.
 // =====================================================================
 
-// Dirección del backend. Vite lee VITE_API_URL del archivo .env (ver .env.example).
-// El operador ?? usa el valor de la derecha si la variable no existe.
-export const API_URL = import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000'
+// Dirección del backend:
+// - Publicado en internet (VITE_MISMO_SERVIDOR=1 al compilar): la API vive en la
+//   misma dirección que la página, así que se usa window.location.origin.
+// - En tu computadora: Vite lee VITE_API_URL del archivo .env (ver .env.example).
+//   El operador ?? usa el valor de la derecha si la variable no existe.
+export const MISMO_SERVIDOR = import.meta.env.VITE_MISMO_SERVIDOR === '1'
+export const API_URL = MISMO_SERVIDOR
+  ? window.location.origin
+  : (import.meta.env.VITE_API_URL ?? 'http://127.0.0.1:8000')
 
 /**
  * Error que viene del servidor con la forma {ok:false, error:{tipo, mensaje}}.
@@ -30,8 +36,10 @@ export class ErrorApi extends Error {
 export class ErrorConexion extends Error {
   constructor() {
     super(
-      'No se pudo conectar con el servidor. Revisa que el backend esté encendido ' +
-        `(npm run dev) en ${API_URL}.`,
+      MISMO_SERVIDOR
+        ? 'No se pudo conectar con el servidor. Puede estar despertando; intenta de nuevo en unos segundos.'
+        : 'No se pudo conectar con el servidor. Revisa que el backend esté encendido ' +
+            `(npm run dev) en ${API_URL}.`,
     )
     this.name = 'ErrorConexion'
   }

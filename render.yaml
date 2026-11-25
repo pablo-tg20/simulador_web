@@ -1,0 +1,21 @@
+# render.yaml — Configuración para publicar el simulador GRATIS en Render (render.com).
+# Un solo servicio: FastAPI entrega la API y también la página de React ya compilada.
+# En Render: New → Blueprint → elige este repositorio → Apply.
+services:
+  - type: web
+    name: simulador-binario
+    runtime: python
+    plan: free
+    # 1) Instala FastAPI  2) Instala React/Vite  3) Compila la página en frontend/dist
+    buildCommand: pip install -r backend/requirements.txt && npm --prefix frontend ci && VITE_MISMO_SERVIDOR=1 npm --prefix frontend run build
+    # Render asigna el puerto en la variable $PORT
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: NODE_VERSION
+        value: "20"
+      - key: SERVIR_FRONTEND
+        value: "1"
