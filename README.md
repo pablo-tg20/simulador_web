@@ -41,6 +41,16 @@ Arranca el backend (<http://127.0.0.1:8000>) y el frontend (<http://localhost:51
 
 Con el backend encendido, la documentación interactiva de la API está en <http://127.0.0.1:8000/docs>.
 
+## Publicar en internet (gratis, con Render)
+
+El archivo **`render.yaml`** deja todo configurado para que cualquiera abra el simulador con un link:
+
+1. Crea una cuenta en [render.com](https://render.com) con **Sign in with GitHub** (no pide tarjeta).
+2. **New → Blueprint**, elige este repositorio y da **Apply**.
+3. Espera a que termine el primer despliegue (unos minutos) y abre el link `https://simulador-binario-xxxx.onrender.com`.
+
+Cada `git push` a la rama principal vuelve a publicar la página sola. En el plan gratis el servidor se duerme tras 15 minutos sin visitas y la primera visita después tarda cerca de un minuto en abrir.
+
 ## Pruebas
 
 ```bash

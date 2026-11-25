@@ -17,7 +17,7 @@ import SeccionAritmetica from './secciones/SeccionAritmetica'
 import SeccionNumeros from './secciones/SeccionNumeros'
 import SeccionPruebas from './secciones/SeccionPruebas'
 import SeccionTexto from './secciones/SeccionTexto'
-import { API_URL, obtenerOperaciones } from './services/api'
+import { API_URL, MISMO_SERVIDOR, obtenerOperaciones } from './services/api'
 
 const OPERACIONES_ARITMETICAS = ['suma', 'resta', 'multiplicacion', 'division']
 const REINTENTO_MS = 4000 // si el servidor está apagado, se vuelve a intentar cada 4 s
@@ -110,10 +110,17 @@ function App() {
         {/* Aviso cuando el backend (FastAPI) no responde */}
         {servidor === 'caido' && (
           <div className="aviso-servidor" role="status">
-            <span>
-              No hay conexión con el servidor de Python en <code>{API_URL}</code>. Enciéndelo con{' '}
-              <code>npm run dev</code> (o <code>iniciar.bat</code>); se reintenta solo cada pocos segundos.
-            </span>
+            {MISMO_SERVIDOR ? (
+              <span>
+                No hay conexión con el servidor. Puede estar despertando (tarda hasta un minuto);
+                se reintenta solo cada pocos segundos.
+              </span>
+            ) : (
+              <span>
+                No hay conexión con el servidor de Python en <code>{API_URL}</code>. Enciéndelo con{' '}
+                <code>npm run dev</code> (o <code>iniciar.bat</code>); se reintenta solo cada pocos segundos.
+              </span>
+            )}
             <button className="sec" type="button" onClick={conectar}>
               Reintentar ahora
             </button>

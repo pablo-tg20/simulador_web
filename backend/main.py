@@ -9,12 +9,15 @@
 #   Navegador (React)  ──POST /api/calcular {json}──►  FastAPI (este archivo)
 #                      ◄──────── {json} ────────────   └─► logica_binaria.calcular()
 
+import os  # Para leer variables de entorno (las usa el servidor en internet)
 from dataclasses import asdict  # Convierte las dataclasses de la lógica en diccionarios
+from pathlib import Path  # Para armar rutas de carpetas sin importar el sistema operativo
 
 from fastapi import FastAPI, Request  # Clase principal del framework y la petición
 from fastapi.exceptions import RequestValidationError  # Error cuando el JSON no tiene la forma esperada
 from fastapi.middleware.cors import CORSMiddleware  # Middleware para permitir CORS
-from fastapi.responses import JSONResponse  # Para devolver JSON con un código de estado propio
+from fastapi.responses import FileResponse, JSONResponse  # Archivos (index.html) y JSON con código propio
+from fastapi.staticfiles import StaticFiles  # Sirve la carpeta frontend/dist (versión publicada)
 from pydantic import BaseModel  # Clase base para definir la forma de los datos
 from starlette.exceptions import HTTPException as StarletteHTTPException  # Errores HTTP (404, 405...)
 
@@ -40,6 +43,16 @@ ORIGENES_PERMITIDOS = [
     "http://localhost:4173",
     "http://127.0.0.1:4173",
 ]
+
+# ---------------------------------------------------------------------
+# MODO PUBLICADO (Render u otro servidor en internet)
+# Si la variable SERVIR_FRONTEND=1 existe y ya se compiló el frontend
+# (npm run build → frontend/dist), este mismo servidor entrega la página
+# de React y la API en la MISMA dirección. Así basta un solo link.
+# En tu computadora (npm run dev) no cambia nada.
+# ---------------------------------------------------------------------
+CARPETA_DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+SERVIR_FRONTEND = os.getenv("SERVIR_FRONTEND") == "1" and (CARPETA_DIST / "index.html").is_file()
 
 
 # ---------------------------------------------------------------------
@@ -152,7 +165,9 @@ class PeticionNumero(BaseModel):
 # ---------------------------------------------------------------------
 @app.get("/")
 def inicio():
-    """Ruta raíz: sirve para comprobar que el servidor está funcionando."""
+    """Ruta raíz: en modo publicado entrega la página; en local, comprueba que el servidor funciona."""
+    if SERVIR_FRONTEND:
+        return FileResponse(CARPETA_DIST / "index.html")
     return {"mensaje": "El servidor del Simulador Binario está funcionando", "documentacion": "/docs"}
 
 
@@ -210,3 +225,12 @@ def convertir_numero_decimal(peticion: PeticionNumero):
     """Decimal → binario (divisiones entre 2) o binario → decimal (suma de potencias de 2)."""
     conversion = convertir_numero(peticion.modo, peticion.valor)
     return {"ok": True, "conversion": asdict(conversion)}
+
+
+# ---------------------------------------------------------------------
+# ARCHIVOS DE LA PÁGINA (solo en modo publicado)
+# Se monta AL FINAL para que las rutas /api/*, /health y /docs tengan prioridad.
+# Entrega /assets/*.js, /assets/*.css, /favicon.svg, etc.
+# ---------------------------------------------------------------------
+if SERVIR_FRONTEND:
+    app.mount("/", StaticFiles(directory=CARPETA_DIST, html=True), name="frontend")
